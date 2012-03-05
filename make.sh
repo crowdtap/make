@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Crowdtap Environment MakeFile
+
 # echo "Checking dependencies ..."
 # echo "  Checking for xcode > 4.2"
 #   /Developer/usr/bin/xcodebuild -version
