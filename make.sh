@@ -69,25 +69,25 @@ echo "Installing bundler, a tool to manage an application's dependencies through
   gem install bundler --no-rdoc --no-ri
 
 echo "Creating a home for the apps"
-  mkdir '~/code'
+  mkdir ~/code
 
 echo "Checking out Crowdtap, the main app"
-  cd '~/code'
+  cd ~/code
   git clone git@github.com:crowdtap/crowdtap.git
 
 echo "Bundling Crowdtap"
-  cd '~/code/crowdtap'
+  cd ~/code/crowdtap
   bundle
 
 echo "Adding builder for Crowdtap"
   git remote add builder kareemk@ci.crowdtap.com:/Volumes/SSD/git-repos/crowdtap-builder.git
 
 echo "Checking out Sniper, our targeting app"
-  cd '~/code'
+  cd ~/code
   git clone git@github.com:crowdtap/sniper.git
 
 echo "Bundling Sniper"
-  cd '~/code/sniper'
+  cd ~/code/sniper
   bundle
 
 echo "Updating Host file"
