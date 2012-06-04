@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Crowdtap Environment Setup Script"
-
-echo "Checking for gcc 4.2 and setting variables"
-  if [[ -f /usr/bin/gcc-4.2 ]]; then
-    CC=/usr/bin/gcc-4.2
-    WHOAMI="`whoami`"
-  else
-    echo "You need to install GCC 4.2 from https://github.com/kennethreitz/osx-gcc-installer";
-    exit;
-  fi
+  WHOAMI="`whoami`"
 
 echo "Checking for SSH key, generating one if it doesn't exist ..."
   [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa && echo "key generated"
@@ -62,8 +54,8 @@ echo "Installing RVM (Ruby Version Manager) ..."
 [[ -s '/Users/`whoami`/.rvm/scripts/rvm' ]] && source '/Users/`whoami`/.rvm/scripts/rvm'" >> ~/.zshrc
   source ~/.zshrc
 
-echo "Installing Ruby 1.9.2 stable and making it the default Ruby ..."
-  rvm install 1.9.2-p290
+echo "Installing Ruby 1.9.2-p180 and making it the default Ruby ..."
+  rvm install 1.9.2-p180
   rvm use 1.9.2 --default
 
 echo "Turning RVM trust rvmrc files on"
@@ -101,7 +93,7 @@ echo "Bundling Sniper"
   bundle
 
 echo "Updating Host file"
-  WHOAMI="`whoami`" && sudo echo "
+  sudo echo "
 
 # Crowdtap
 127.0.0.1          crowdtap.local
@@ -110,7 +102,7 @@ echo "Updating Host file"
 
 echo "Update Apache Virtual Host File"
   sudo touch /etc/apache2/other/crowdtap.vhost.conf
-  WHOAMI="`whoami`" && sudo echo "
+  sudo echo "
 SetEnv PATH '/usr/local/bin/:$PATH'
 
 <Directory '/Users/`echo $WHOAMI`/code/crowdtap/public'>
