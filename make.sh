@@ -2,9 +2,9 @@
 
 echo "Crowdtap Environment Setup Script"
 
-# echo "Checking dependencies ..."
-# echo "  Checking for xcode > 4.2"
-#   /Developer/usr/bin/xcodebuild -version
+ echo "Checking dependencies ..."
+ echo "  Checking for xcode > 4.2"
+   /Developer/usr/bin/xcodebuild -version
 
 echo "Checking for SSH key, generating one if it doesn't exist ..."
   [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
@@ -39,16 +39,13 @@ echo "Installing QT, used by Capybara Webkit for headless Javascript integration
   brew install qt
 
 echo "Installing the Crowdtap Profile"
-  cd ~
-  git clone git@github.com:crowdtap/dotfiles.git .dotfiles
-  cd ~/.dotfiles
-  rake install
-  cd ~
+  cd ~ && git clone git@github.com:crowdtap/dotfiles.git .dotfiles
+  cd ~/.dotfiles && ls && make install
   source ~/.zshrc
 
 echo "Put Homebrew location earlier in PATH ..."
   echo "
-# recommended by brew doctor
+#recommended by brew doctor
 export PATH='/usr/local/bin:$PATH'" >> ~/.zshrc
   source ~/.zshrc
 
@@ -85,6 +82,7 @@ echo "Bundling Crowdtap"
   bundle
 
 echo "Adding builder for Crowdtap"
+  cd ~/code/crowdtap
   git remote add builder kareemk@ci.crowdtap.com:/Volumes/SSD/git-repos/crowdtap-builder.git
 
 echo "Checking out Sniper, our targeting app"
@@ -106,9 +104,9 @@ echo "Updating Host file"
 echo "Update Apache Virtual Host File"
   sudo touch /etc/apache2/other/crowdtap.vhost.conf
   sudo echo "
-SetEnv PATH "/usr/local/bin/:$PATH"
+SetEnv PATH '/usr/local/bin/:$PATH'
 
-<Directory "/Users/`whoami`/code/crowdtap/public">
+<Directory '/Users/`whoami`/code/crowdtap/public'>
    Options FollowSymLinks
    AllowOverride None
    Order allow,deny
@@ -119,7 +117,7 @@ NameVirtualHost *:80
 
 <VirtualHost *:80>
   ServerName crowdtap.local
-  DocumentRoot "/Users/`whoami`/code/crowdtap/public"
+  DocumentRoot '/Users/`whoami`/code/crowdtap/public'
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
   RewriteRule ^/(.*)$ http://127.0.0.1:3000%{REQUEST_URI} [P,QSA,L]
   ProxyPass / http://127.0.0.1:3000/
@@ -128,7 +126,7 @@ NameVirtualHost *:80
 
 <VirtualHost *:80>
   ServerName sniper.crowdtap.local
-  DocumentRoot "/Users/`whoami`/code/sniper/public"
+  DocumentRoot '/Users/`whoami`/code/sniper/public'
   ProxyPass / http://127.0.0.1:3001/
   ProxyPassReverse / http://127.0.0.1:3001/
 </VirtualHost>" >> /etc/apache2/other/crowdtap.vhost.conf
