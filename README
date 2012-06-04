@@ -1,4 +1,3 @@
 Crowdtap Environment Installation Script
 
-Requires XCODE to be installed
-Requires zShell
+to install ```curl -L https://github.com/crowdtap/make/blob/master/make.sh | sh```
