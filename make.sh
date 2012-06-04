@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 
-# Crowdtap Environment MakeFile
+echo "Crowdtap Environment Setup Script"
 
 # echo "Checking dependencies ..."
 # echo "  Checking for xcode > 4.2"
 #   /Developer/usr/bin/xcodebuild -version
 
-echo "  Checking for SSH key, generating one if it doesn't exist ..."
+echo "Checking for SSH key, generating one if it doesn't exist ..."
   [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
 
-echo "  Copying public key to clipboard. Paste it into your Github account ..."
+echo "Copying public key to clipboard. Paste it into your Github account ..."
   [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
   open https://github.com/account/ssh
-
-echo "Installing Brew and related packages"
 
 echo "Installing Homebrew, a good OS X package manager ..."
   /usr/bin/ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
@@ -43,7 +41,7 @@ echo "Installing QT, used by Capybara Webkit for headless Javascript integration
 echo "Installing the Crowdtap Profile"
   cd ~
   git clone git@github.com:crowdtap/dotfiles.git .dotfiles
-  cd dotfiles
+  cd ~/.dotfiles
   rake install
   cd ~
   source ~/.zshrc
@@ -55,15 +53,22 @@ export PATH='/usr/local/bin:$PATH'" >> ~/.zshrc
   source ~/.zshrc
 
 echo "Installing RVM (Ruby Version Manager) ..."
-  bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
-  echo "
-# RVM
+  bash -s stable < <(curl -s -L https://get.rvm.io)
+  echo "\n# RVM
 [[ -s '/Users/`whoami`/.rvm/scripts/rvm' ]] && source '/Users/`whoami`/.rvm/scripts/rvm'" >> ~/.zshrc
   source ~/.zshrc
 
 echo "Installing Ruby 1.9.2 stable and making it the default Ruby ..."
   rvm install 1.9.2-p290
   rvm use 1.9.2 --default
+
+echo "Turning RVM trust rvmrc files on"
+  echo "\n# Trust all rvmrc files
+export rvm_trust_rvmrcs_flag=1" >> ~/.rvmrc
+
+echo "Turning rDoc and riDoc off by default"
+  touch ~/.gemrc
+  echo "gem: --no-ri --no-rdoc\n" >> ~/.gemrc
 
 echo "Installing bundler, a tool to manage an application's dependencies through its entire life across many machines systematically and repeatably."
   gem install bundler --no-rdoc --no-ri
