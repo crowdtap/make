@@ -2,8 +2,17 @@
 
 echo "Crowdtap Environment Setup Script"
 
+echo "Checking for gcc 4.2 and setting variables"
+  if [[ -f /usr/bin/gcc-4.2 ]]; then
+    CC=/usr/bin/gcc-4.2
+    WHOAMI="`whoami`"
+  else
+    echo "You need to install GCC 4.2 from https://github.com/kennethreitz/osx-gcc-installer";
+    exit;
+  fi
+
 echo "Checking for SSH key, generating one if it doesn't exist ..."
-  [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa
+  [[ -f ~/.ssh/id_rsa.pub ]] || ssh-keygen -t rsa && echo "key generated"
 
 echo "Copying public key to clipboard. Paste it into your Github account ..."
   [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
