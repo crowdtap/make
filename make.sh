@@ -10,6 +10,8 @@ echo "Copying public key to clipboard. Paste it into your Github account ..."
   [[ -f ~/.ssh/id_rsa.pub ]] && cat ~/.ssh/id_rsa.pub | pbcopy
   open https://github.com/account/ssh
 
+read -p "Press [Enter] once you have added your SSH key."
+
 echo "Installing Homebrew, a good OS X package manager ..."
   /usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
   brew update
@@ -56,15 +58,11 @@ echo "Installing RVM (Ruby Version Manager) ..."
 
 echo "Installing Ruby 1.9.2-p180 and making it the default Ruby ..."
   rvm install 1.9.2-p180
-  rvm use 1.9.2 --default
+  rvm use 1.9.2-p180 --default
 
 echo "Turning RVM trust rvmrc files on"
   echo "\n# Trust all rvmrc files
 export rvm_trust_rvmrcs_flag=1" >> ~/.rvmrc
-
-echo "Turning rDoc and riDoc off by default"
-  touch ~/.gemrc
-  echo "gem: --no-ri --no-rdoc\n" >> ~/.gemrc
 
 echo "Installing bundler, a tool to manage an application's dependencies through its entire life across many machines systematically and repeatably."
   gem install bundler --no-rdoc --no-ri
@@ -102,7 +100,7 @@ echo "Updating Host file"
 
 echo "Update Apache Virtual Host File"
   sudo touch /etc/apache2/other/crowdtap.vhost.conf
-  sudo echo "
+  sudo sh -c "echo \"
 SetEnv PATH '/usr/local/bin/:$PATH'
 
 <Directory '/Users/`echo $WHOAMI`/code/crowdtap/public'>
@@ -128,7 +126,7 @@ NameVirtualHost *:80
   DocumentRoot '/Users/`echo $WHOAMI`/code/sniper/public'
   ProxyPass / http://127.0.0.1:3001/
   ProxyPassReverse / http://127.0.0.1:3001/
-</VirtualHost>" >> /etc/apache2/other/crowdtap.vhost.conf
+</VirtualHost>\"" >> /etc/apache2/other/crowdtap.vhost.conf
 
 echo "Restarting Apache"
   sudo apachectl restart
